@@ -20,6 +20,14 @@ class TzTest extends TestCase
 		actual = tz.toUTC(1981, 4, 12, 19, 20);
 		expected = SimpleTime.fromYMDHM(1981, 4, 12, 17, 20);
 		assertEquals(expected.toString(), actual.toString());
+		
+		actual = tz.toUTC(1940, 1, 1, 19, 20);
+		expected = SimpleTime.fromYMDHM(1940, 1, 1, 18, 20);
+		assertEquals(expected.toString(), actual.toString());
+		// DST all year during the war:
+		actual = tz.toUTC(1941, 1, 1, 19, 20);
+		expected = SimpleTime.fromYMDHM(1941, 1, 1, 17, 20);
+		assertEquals(expected.toString(), actual.toString());
 	}
 	
 }

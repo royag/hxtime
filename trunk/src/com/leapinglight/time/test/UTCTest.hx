@@ -17,6 +17,10 @@ class UTCTest extends TestCase
 		assertEquals(261253200, UTC.toSecsSinceEpoch(1978, 4, 12, 18, 20));
 	}
 	
+	public function testSecsAfter1970_firstday_32Bit() {
+		assertEquals(315532800, UTC.toSecsSinceEpoch(1980, 1, 1, 0, 0));
+	}	
+	
 	public function testSecsBefore1970_32Bit_Limit() {
 		assertEquals( -2145916800, UTC.toSecsSinceEpoch(1902, 1, 1, 0, 0));
 	}	
@@ -24,6 +28,15 @@ class UTCTest extends TestCase
 	public function testSecsBefore1970_32Bit() {
 		assertEquals( -617637000, UTC.toSecsSinceEpoch(1950, 6, 6, 10, 10));
 		assertEquals(-2132401800, UTC.toSecsSinceEpoch(1902, 6, 6, 10, 10));
+	}
+	
+	public function testSecsBefore1970_firstday_32Bit() {
+		assertEquals( -631152000, UTC.toSecsSinceEpoch(1950, 1, 1, 0, 0));
+	}	
+	
+	public function testLeapYear() {
+		assertTrue(UTC.LEAPYEAR(1940));
+		assertFalse(UTC.LEAPYEAR(1939));
 	}
 	
 	public function testGmtimeAfter1970_32Bit() {
@@ -44,6 +57,14 @@ class UTCTest extends TestCase
 			Std.string(SimpleTime.fromYMDHM(1950, 6, 6, 10, 10)));
 		assertEquals(Std.string(UTC.gmtime( -2132401800)),
 			Std.string(SimpleTime.fromYMDHM(1902, 6, 6, 10, 10)));
+			
+		assertEquals(Std.string(UTC.gmtime(  -946771200)), Std.string(SimpleTime.fromYMDHM(1940, 1, 1, 0, 0)));
+		assertEquals(Std.string(UTC.gmtime(  -978307200)), Std.string(SimpleTime.fromYMDHM(1939, 1, 1, 0, 0)));
+			
+			
+			
+		/*assertEquals(Std.string(UTC.gmtime(  -946705200)), 
+			Std.string(SimpleTime.fromYMDHM(1940, 1, 1, 18, 20)));*/
 	}	
 	
 	
@@ -71,6 +92,9 @@ class UTCTest extends TestCase
 			Std.string(SimpleTime.fromYMDHM(1950, 6, 6, 10, 10)));
 		assertEquals(Std.string(UTC.gmtime64(Int64.ofInt( -2132401800))),
 			Std.string(SimpleTime.fromYMDHM(1902, 6, 6, 10, 10)));
+			
+		assertEquals(Std.string(UTC.gmtime64(Int64.ofInt(-946771200))), Std.string(SimpleTime.fromYMDHM(1940, 1, 1, 0, 0)));
+			
 	}	
 	
 	

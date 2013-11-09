@@ -18,8 +18,8 @@ class UTC
 	static var  EPOCH_YR:Int     =   1970;            /* EPOCH = Jan 1 1970 00:00:00 */
 	static var  SECS_DAY:Int     =   (24 * 60 * 60);
 
-	static inline function LEAPYEAR(year:Int) { return (0 == ((year) % 4) && (((year) % 100 != 0) || !((year) % 400 != 0))); }
-	static inline function  YEARSIZE(year:Int) { return (LEAPYEAR(year) ? 366 : 365); }
+	public static inline function LEAPYEAR(year:Int) { return (0 == ((year) % 4) && (((year) % 100 != 0) || !((year) % 400 != 0))); }
+	public static inline function  YEARSIZE(year:Int) { return (LEAPYEAR(year) ? 366 : 365); }
 	static var  _ytab:Array<Array<Int>> = [
                [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ],
                [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
@@ -122,9 +122,12 @@ class UTC
 			}
 		} else {
 			while (dayno < 0) {
-				dayno += YEARSIZE(year);
+				dayno += YEARSIZE(year-1);
 				year--;
-			}			
+			}
+			/*if (dayno < 0) {
+				dayno = 0;
+			}*/
 		}
         timep.year = year;
         timep.day = dayno;
@@ -132,6 +135,9 @@ class UTC
         while (dayno >= _ytab[LEAPYEAR(year) ? 1 : 0][timep.month]) {
             dayno -= _ytab[LEAPYEAR(year) ? 1 : 0][timep.month];
             timep.month++;
+			if (timep.month > 12) {
+				throw "implementation error: month > 12";
+			}
         }
 		timep.month ++;
         timep.day = dayno + 1;
@@ -181,7 +187,7 @@ class UTC
 			}
 		} else {
 			while (Int64.compare(dayno,Int64.ofInt(0)) < 0) {
-				dayno = Int64.add(dayno, Int64.ofInt(YEARSIZE(year)));
+				dayno = Int64.add(dayno, Int64.ofInt(YEARSIZE(year-1)));
 				year--;
 			}			
 		}		
@@ -192,6 +198,9 @@ class UTC
         while (Int64.compare(dayno,Int64.ofInt(_ytab[LEAPYEAR(year) ? 1 : 0][timep.month])) >= 0) { 
             dayno = Int64.sub(dayno, Int64.ofInt(_ytab[LEAPYEAR(year) ? 1 : 0][timep.month]));
             timep.month++;
+			if (timep.month > 12) {
+				throw "implementation error: month > 12";
+			}			
         }
 		timep.month ++;
         timep.day = Int64.toInt(dayno) + 1;
