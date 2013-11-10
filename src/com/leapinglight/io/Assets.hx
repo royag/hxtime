@@ -13,5 +13,9 @@ class Assets
 		return new ByteArray(File.getBytes(path));
 	}
 	
+	public static function getText(path:String) {
+		return File.getContent(path);
+	}
+	
 }
 #end

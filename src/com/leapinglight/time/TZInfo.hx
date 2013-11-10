@@ -70,6 +70,7 @@ class TZInfo
 	{
 		var data = Assets.getBytes("assets/tz/tzall.dat");
 		data.endian = Endian.LITTLE_ENDIAN;
+		data.position = 0;
 		return data;
 	}
 
@@ -98,6 +99,9 @@ class TZInfo
 	}
 	
 	function loadZoneFromAll(zoneName:String):Void {
+		if (zoneName == null) {
+			throw "Zone is NULL";
+		}
 		var reader:ByteArray = getStream();
 		reader.position = 0;
 		reader.endian = Endian.LITTLE_ENDIAN;
@@ -113,13 +117,14 @@ class TZInfo
 			if (StringTools.trim(name).toLowerCase() == StringTools.trim(zoneName).toLowerCase())
 			{
 				loadFile(reader);
-				break;
+				return;
 			}
 			else
 			{
 				reader.position += dataLength;
 			}
 		}
+		throw "No such zone: " + zoneName;
 	}
 	
 	function loadFile(ins:ByteArray) :Void {
@@ -190,12 +195,11 @@ class TZInfo
 		
 		// Set default timezone (normaltz).
 		// First, set default to first non-DST rule.
-		for (t in tztypes) {
-			if (t.dst) {
-				normalTZ = t;
-				break;
-			}
+		var n = 0;
+		while (tztypes[n].dst && n < tztypes.length) {
+			++n;
 		}
+		normalTZ = tztypes[n];
 		
 		// When setting "normaltz" (the default timezone) in the constructor,
 		// we originally took the first non-DST rule for the current TZ.

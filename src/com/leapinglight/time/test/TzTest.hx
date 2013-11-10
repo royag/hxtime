@@ -16,6 +16,16 @@ class TzTest extends TestCase
 		assertEquals(570, l.length);
 	}
 	
+	public function testAllZonesShouldBeLoadable() {
+		var l = new List<String>();
+		TZInfo.readZones(l);
+		var tz:TZInfo;
+		for (z in l) {
+			tz = new TZInfo(z);
+			assertTrue(tz != null);
+		}
+	}
+	
 	public function testEuropeOslo() {
 		var tz:TZInfo = new TZInfo("Europe/Oslo");
 		var actual:SimpleTime = tz.toUTC(1978, 4, 12, 19, 20);
