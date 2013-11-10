@@ -1,6 +1,5 @@
 package com.leapinglight.time;
 
-import flash.display.InteractiveObject;
 import haxe.Int64;
 
 class UTC
@@ -56,7 +55,7 @@ class UTC
 		  
 	public static function mktime(time:SimpleTime) : Int {
 		if (time.year < 1902) {
-			throw "Time too low. Will underflow when counting back to 1901-01-01";
+			throw "Year (" + Std.string(time.year) + ") too low. Will underflow when counting back to 1901-01-01";
 		}
 		var ret:Int = 0;
 		var y:Int = EPOCH_YR;
