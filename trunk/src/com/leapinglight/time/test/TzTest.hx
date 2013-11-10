@@ -10,6 +10,11 @@ import com.leapinglight.time.TZInfo;
 class TzTest extends TestCase
 {
 
+	public function testReadZoneNames() {
+		var l = new List<String>();
+		TZInfo.readZones(l);
+		assertEquals(570, l.length);
+	}
 	
 	public function testEuropeOslo() {
 		var tz:TZInfo = new TZInfo("Europe/Oslo");

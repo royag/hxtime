@@ -1,8 +1,5 @@
 package com.leapinglight.time;
 
-//import openfl.Assets;
-//import flash.utils.ByteArray;
-//import flash.utils.Endian;
 import com.leapinglight.io.Assets;
 import com.leapinglight.io.ByteArray;
 import com.leapinglight.io.Endian;
@@ -39,7 +36,6 @@ class TZInfo
 		if (timecnt > 0 && clock >= transTimes[0])
 		{
 			var i = 1;
-			//for (; i < timecnt; ++i)
 			while (i < timecnt)
 			{
 				if (clock < transTimes[i])
@@ -57,25 +53,10 @@ class TZInfo
 	
 	public function  toUTC(year:Int, month:Int, day:Int, h:Int, m:Int) : SimpleTime
 	{
-		//DateTime dt = new DateTime(year, month, day, h, m, 0, DateTimeKind.Utc);
 		var s = UTC.toSecsSinceEpoch(year, month, day, h, m);
 		var t:TZType = getTZ(s);
 		
 		return UTC.gmtime(s - t.offset);
-		/*
-		//dt = dt.AddSeconds(-t.offset);
-		var sf:Float = cast(s - t.offset);
-		var trf:Float = cast(timeResolution);
-		var f:Float = sf*trf;
-		var dt:Date = Date.fromTime(f);
-		var ret:SimpleTime = new SimpleTime();
-		
-		ret.year = dt.getFullYear();
-		ret.month = dt.getMonth() + 1;
-		ret.day = dt.getDay();
-		ret.hour = dt.getHours();
-		ret.minute = dt.getMinutes();
-		return ret;*/
 	}	
 
 	
@@ -85,46 +66,34 @@ class TZInfo
 		this.loadZoneFromAll(zoneName);
 	}
 	
-	private static var TZDATA:ByteArray = null;
-
 	private static function getStream():ByteArray
 	{
-		//return Assets.getBytes("assets/tz/tzall.dat");
-		if (TZDATA == null) {
-			TZDATA = Assets.getBytes("assets/tz/tzall.dat");
-			TZDATA.endian = Endian.LITTLE_ENDIAN;
-		}
-		TZDATA.position = 0;
-		return TZDATA;
+		var data = Assets.getBytes("assets/tz/tzall.dat");
+		data.endian = Endian.LITTLE_ENDIAN;
+		return data;
 	}
 
 	public static function readZones(target : List<String>):Int
 	{
 		var i = 0;
 		var reader:ByteArray = getStream();
+		reader.position = 0;
 		var/*UInt16*/ nameLength:Int;
 		var name:String;
 		var/*UInt16*/ dataLength:Int;
-		while (reader.bytesAvailable > 0) {
-			nameLength = reader.readUnsignedShort();
-			name = readStringOfSize(reader, nameLength);
-			dataLength = reader.readUnsignedShort();
-			reader.position += dataLength;
-			target.add(name);
-			i++;
-		}
+			while (reader.bytesAvailable > 0) {
+				nameLength = reader.readUnsignedShort();
+				name = readStringOfSize(reader, nameLength);
+				dataLength = reader.readUnsignedShort();
+				reader.position += dataLength;
+				target.add(name);
+				i++;
+			}
 		return i;
 	}
 	
 	public static function readStringOfSize(r:ByteArray, size:Int):String
 	{
-		/*string ret = "";
-		for (int i = 0; i < size; i++)
-		{
-			char c = (char)r.ReadByte();
-			ret += c;
-		}
-		return ret;*/
 		return r.readUTFBytes(size);
 	}
 	
@@ -176,10 +145,6 @@ class TZInfo
 			transTypes.push(ins.readByte());
 			i++;
 		}
-		
-		/*Int32[] offset = new Int32[typecnt];
-            sbyte[] dst = new sbyte[typecnt];
-            sbyte[] idx = new sbyte[typecnt];*/
 
 		var offset:Array<Int> = new Array<Int>();
 		var dst:Array<Int> = new Array<Int>();
@@ -225,11 +190,6 @@ class TZInfo
 		
 		// Set default timezone (normaltz).
 		// First, set default to first non-DST rule.
-		/*var n:Int = 0;
-		while (tztypes[n].dst && n < tztypes.length) {
-			++n;
-		}*/
-		//normalTZ = tztypes.[n];
 		for (t in tztypes) {
 			if (t.dst) {
 				normalTZ = t;
@@ -252,15 +212,6 @@ class TZInfo
 		// (QT 4.7 only) qint64 ts = QDateTime::currentMSecsSinceEpoch() / 1000;
 		/*long ts = currentSecsSinceEpoch(); //::currentDateTime().toTime_t();
 		//final long ts = System.currentTimeMillis() / 1000;
-		
-		for (int i = 0; i < 9; i++)
-		{
-			TZType currTz = getTZ(ts + secsPerThreeMonths * i);
-			if (!currTz.dst)
-			{
-				normalTZ = currTz;
-				break;
-			}
 		}*/
 		var ts = UTC.currentSecsSinceEpoch();
 		i = 0;
@@ -273,8 +224,5 @@ class TZInfo
 			}			
 			i++;
 		}
-		
-		
 	}
-	
 }
