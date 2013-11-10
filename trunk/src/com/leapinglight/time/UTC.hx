@@ -1,5 +1,6 @@
 package com.leapinglight.time;
 
+import flash.display.InteractiveObject;
 import haxe.Int64;
 
 class UTC
@@ -25,6 +26,34 @@ class UTC
                [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
           ];
 
+	static inline function years(i:Int) {
+		return i * 365 * SECS_DAY;
+	}
+	static inline function months(i:Int) {
+		return i * 30 * SECS_DAY;
+	}
+	static inline function days(i:Int) {
+		return i * SECS_DAY;
+	}
+	static inline function hours(i:Int) {
+		return i * 3600;
+	}
+	static inline function minutes(i:Int) {
+		return i * 60;
+	}
+		  
+	public static function adjustTime(st:SimpleTime, y:Int, m:Int, d:Int, h:Int, mins:Int, secs:Int) : SimpleTime {
+		var time = mktime64(st);
+		var nt = time;
+		nt = Int64.add(nt, Int64.ofInt(years(y)));
+		nt = Int64.add(nt, Int64.ofInt(months(m)));
+		nt = Int64.add(nt, Int64.ofInt(days(d)));
+		nt = Int64.add(nt, Int64.ofInt(hours(h)));
+		nt = Int64.add(nt, Int64.ofInt(minutes(mins)));
+		nt = Int64.add(nt, Int64.ofInt(secs));
+		return gmtime64(nt);
+	}
+		  
 	public static function mktime(time:SimpleTime) : Int {
 		if (time.year < 1902) {
 			throw "Time too low. Will underflow when counting back to 1901-01-01";
