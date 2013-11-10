@@ -21,7 +21,7 @@ class ByteArray
 	}
 	
 	function set_position(value) {
-		if (value >= bytes.length) {
+		if (value > bytes.length) {
 			throw "End of Stream";
 		}
 		bytesAvailable = bytes.length - value;
@@ -38,6 +38,11 @@ class ByteArray
 		}
 	}
 	
+	public inline function readUnsignedInt() : Int {
+		// unsigned will be same, or will be wrong when cast to Int anyways...
+		return readInt();
+	}
+	
 	public function readUnsignedShort() : Int {
 		var p = position;
 		position += 2;
@@ -48,11 +53,21 @@ class ByteArray
 		}
 	}
 	
+	public function readShort() : Int {
+		// TODO hmmm...
+		return readUnsignedShort();
+	}
+	
 	public function readByte() : Int {
-		// signed or unsigned ????
+		// TODO signed or unsigned ????
 		var p = position;
 		position++;
 		return bytes.get(p);
+	}
+	
+	public inline function readUnsignedByte() : Int {
+		// TODO hmmm...
+		return readByte();
 	}
 	
 	public function readUTFBytes(len:Int) : String {
