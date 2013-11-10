@@ -158,8 +158,10 @@ class UTC
         dayclock = Int64.mod(time, SECS_DAY64);
         dayno = Int64.div(time, SECS_DAY64);
 		
-		var before1970 = (Int64.compare(time,Int64.ofInt(0)) < 0);
+		//var before1970 = (Int64.compare(time,Int64.ofInt(0)) < 0); // THIS BUGS ON JAVA+CS FOR LARGE LONGS
  
+		var before1970 = Int64.isNeg(time);
+		
         timep.seconds = Int64.toInt(Int64.mod(dayclock, SECS_MIN64));
         timep.minute = Int64.toInt(Int64.div(Int64.mod(dayclock, SECS_HOUR64), SECS_MIN64));
         timep.hour = Int64.toInt(Int64.div(dayclock, SECS_HOUR64));
@@ -186,7 +188,7 @@ class UTC
 				year++;
 			}
 		} else {
-			while (Int64.compare(dayno,Int64.ofInt(0)) < 0) {
+			while (Int64.isNeg(dayno)) { //Int64.compare(dayno,Int64.ofInt(0)) < 0) {
 				dayno = Int64.add(dayno, Int64.ofInt(YEARSIZE(year-1)));
 				year--;
 			}			

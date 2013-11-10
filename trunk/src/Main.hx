@@ -1,8 +1,10 @@
 package ;
 
+#if openfl
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+#end
 
 import com.leapinglight.time.test.TzTest;
 import com.leapinglight.time.test.UTCTest;
@@ -13,8 +15,28 @@ import haxe.unit.TestRunner;
  * @author Roy
  */
 
-class Main extends Sprite 
+#if openfl
+class Main extends Sprite
+#else
+class Main
+#end
 {
+	static function runTests() {
+		var r = new TestRunner();
+		
+        r.add(new TzTest());
+		r.add(new UTCTest());
+
+        r.run();
+		trace(r.result.toString());
+	}
+	
+	#if !openfl
+	public static function main() 
+	{
+		runTests();
+	}	
+	#else
 	var inited:Bool;
 
 	/* ENTRY POINT */
@@ -65,13 +87,8 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
 		Lib.current.addChild(new Main());
 		
-		var r = new TestRunner();
-		
-        r.add(new TzTest());
-		r.add(new UTCTest());
-
-        r.run();
-		trace(r.result.toString());
+		runTests();
 	}
+	#end
 	
 }
