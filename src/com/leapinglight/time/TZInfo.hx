@@ -1,8 +1,11 @@
 package com.leapinglight.time;
 
-import openfl.Assets;
-import flash.utils.ByteArray;
-import flash.utils.Endian;
+//import openfl.Assets;
+//import flash.utils.ByteArray;
+//import flash.utils.Endian;
+import com.leapinglight.io.Assets;
+import com.leapinglight.io.ByteArray;
+import com.leapinglight.io.Endian;
 
 	class TZType
         {
