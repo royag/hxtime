@@ -45,4 +45,11 @@ class TzTest extends TestCase
 		assertEquals(expected.toString(), actual.toString());
 	}
 	
+	public function testBefore1902() {
+		var tz:TZInfo = new TZInfo("Europe/Oslo");
+		var actual:SimpleTime = tz.toUTC(1830, 4, 12, 19, 20);
+		var expected = SimpleTime.fromYMDHM(1830, 4, 12, 18, 20);
+		assertEquals(expected.toString(), actual.toString());
+	}
+	
 }

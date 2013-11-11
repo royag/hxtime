@@ -3,6 +3,7 @@ package com.leapinglight.time;
 import com.leapinglight.io.Assets;
 import com.leapinglight.io.ByteArray;
 import com.leapinglight.io.Endian;
+import haxe.Int64;
 
 	class TZType
         {
@@ -53,10 +54,18 @@ class TZInfo
 	
 	public function  toUTC(year:Int, month:Int, day:Int, h:Int, m:Int) : SimpleTime
 	{
-		var s = UTC.toSecsSinceEpoch(year, month, day, h, m);
-		var t:TZType = getTZ(s);
+		var zoneTime:Int;
+		if (year < UTC.MIN_YEAR_32BIT) {
+			// This early it is allways the first anyways...
+			zoneTime = UTC.INT_MIN_VAL;
+		} else {
+			zoneTime = UTC.toSecsSinceEpoch(year, month, day, h, m);
+		}
+		var t:TZType = getTZ(zoneTime);
 		
-		return UTC.gmtime(s - t.offset);
+		var secs = UTC.mktime64(SimpleTime.fromYMDHM(year, month, day, h, m));
+		
+		return UTC.gmtime64(Int64.sub(secs, Int64.ofInt(t.offset)));
 	}	
 
 	

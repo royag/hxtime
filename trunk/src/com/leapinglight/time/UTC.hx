@@ -5,6 +5,9 @@ import haxe.Int64;
 class UTC
 {
 	
+	public static inline var MIN_YEAR_32BIT = 1902;
+	public static inline var INT_MIN_VAL : Int = -214748364;
+	
 	public static function currentSecsSinceEpoch() : Int
 	{
 		var d:Date = Date.now();
