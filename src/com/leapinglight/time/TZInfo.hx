@@ -75,15 +75,15 @@ class TZInfo
 		this.loadZoneFromAll(zoneName);
 	}
 	
-	#if openfl
-	// Cache statically when using OpenFL
+	#if android
+	// Cache statically
 	// Android seems to crash otherwise
 	static var  data = Assets.getBytes("assets/tz/tzall.dat");
 	#end
 	
 	private static function getStream():ByteArray
 	{
-		#if !openfl
+		#if !android
 		var data = Assets.getBytes("assets/tz/tzall.dat");
 		#end
 		data.endian = Endian.LITTLE_ENDIAN;
