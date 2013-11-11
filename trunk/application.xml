@@ -3,7 +3,7 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Hxtime" package="Hxtime" version="1.0.0" company="Roy" />
+	<meta title="Hxtime" package="com.leapinglight.Hxtime" version="1.0.0" company="Roy" />
 	
 	<!-- output -->
 	<app main="Main" file="Hxtime" path="bin" />
