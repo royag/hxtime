@@ -1,2 +1,2 @@
-haxe -cs outcs -cp src -main Main
-outcs\bin\outcs.exe
+haxe -cs outcs -cp . -main Main
+outcs\bin\Main.exe
