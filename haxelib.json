@@ -1,0 +1,11 @@
+{
+	"name": "hxtime",
+	"url": "https://code.google.com/p/hxtime/",
+	"license": "Other open Source",
+	"tags": [],
+	"description": "UTC-time and TimeZone library for Haxe",
+	"version": "1.0.0",
+	"releasenote": "Initial",
+	"contributors": [ "roy" ],
+	"dependencies": {}
+}
