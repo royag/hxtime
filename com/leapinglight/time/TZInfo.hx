@@ -91,7 +91,7 @@ class TZInfo
 		return data;
 	}
 
-	public static function readZones(target : List<String>):Int
+	public static function readZones(target : Array<String>):Int
 	{
 		var i = 0;
 		var reader:ByteArray = getStream();
@@ -104,7 +104,7 @@ class TZInfo
 				name = readStringOfSize(reader, nameLength);
 				dataLength = reader.readUnsignedShort();
 				reader.position += dataLength;
-				target.add(name);
+				target.push(name);
 				i++;
 			}
 		return i;
