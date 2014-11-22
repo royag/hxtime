@@ -11,13 +11,13 @@ class TzTest extends TestCase
 {
 
 	public function testReadZoneNames() {
-		var l = new List<String>();
+		var l = new Array<String>();
 		TZInfo.readZones(l);
 		assertEquals(570, l.length);
 	}
 	
 	public function testAllZonesShouldBeLoadable() {
-		var l = new List<String>();
+		var l = new Array<String>();
 		TZInfo.readZones(l);
 		var tz:TZInfo;
 		for (z in l) {
