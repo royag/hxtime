@@ -55,7 +55,20 @@ class ByteArray
 	
 	public function readShort() : Int {
 		// TODO hmmm...
-		return readUnsignedShort();
+		/*return readUnsignedShort();
+		var sign = v[0] & (1 << 7);
+		var i = ((v[0] & 0x7F) << 8) | v[1];
+		if (sign) {
+			i = -i;
+		}*/
+		var p = position;
+		position += 2;
+		if (endian == Endian.LITTLE_ENDIAN) {
+			return Pack.littleEndianToSignedShort(bytes, p);
+		} else {
+			throw "not yet supported";
+			//return Pack.bigEndianToUnsignedShort(bytes, p);
+		}		
 	}
 	
 	public function readByte() : Int {
@@ -73,7 +86,7 @@ class ByteArray
 	public function readUTFBytes(len:Int) : String {
 		var p = position;
 		position += len;
-		return bytes.readString(p, len);
+		return bytes.getString(p, len); // .readString(p, len);
 	}
 }
 #end
