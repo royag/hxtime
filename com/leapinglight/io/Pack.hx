@@ -85,7 +85,13 @@ class Pack
         var n:Int = bs.get(  off) & 0xff;
         n |= (bs.get(++off) & 0xff) << 8;
         return n;
-    }	
+    }
+	
+    public static function littleEndianToSignedShort(bs:Bytes, off:Int):Int
+    {
+		var bytes = [bs.get(off), bs.get(off+1)];
+		return ((bytes[0] & 0xff) | (bytes[1] << 8)) << 16 >> 16;
+    }		
 
     public static function littleEndianToIntArray(bs:Bytes,  off:Int, ns:Array<Int>):Void
 	{
