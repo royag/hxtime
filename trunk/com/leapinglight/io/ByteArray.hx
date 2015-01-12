@@ -28,6 +28,11 @@ class ByteArray
 		return position = value;
 	}
 	
+	public function readInto(dst:Bytes) {
+		dst.blit(0, bytes, position, dst.length);
+		position += dst.length;
+	}
+	
 	public function readInt() : Int {
 		var p = position;
 		position += 4;
